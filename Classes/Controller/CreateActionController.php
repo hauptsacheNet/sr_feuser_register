@@ -74,7 +74,7 @@ class CreateActionController extends AbstractActionController
 			$evalErrors = $this->data->evalValues($finalDataArray, $origArray, $this->marker, $cmdKey);
 			// If the two password fields are not equal, clear session data
 			if (is_array($evalErrors['password']) && in_array('twice', $evalErrors['password'])) {
-				SessionData::clearSessionData($this->extensionKey);
+				SessionData::clearSessionData($this->extentionKey);
 			}
 			// No preview flag if a evaluation failure has occured
 			if ($this->data->getFailure()) {
@@ -155,8 +155,8 @@ class CreateActionController extends AbstractActionController
 					}
 					// Auto login on create
 					if ($this->theTable === 'fe_users' && $cmd === 'create' && !$this->parameters->getSetfixedEnabled() && $this->conf['enableAutoLoginOnCreate']) {
-						$password = SessionData::readPassword($this->extensionKey);
-						$loginSuccess = $this->login($dataArray['username'], $password['password']);
+						$password = $this->parameters->readPassword();
+						$loginSuccess = $this->login($dataArray['username'], $password);
 						if ($loginSuccess) {
 							// Login was successful
 							exit;

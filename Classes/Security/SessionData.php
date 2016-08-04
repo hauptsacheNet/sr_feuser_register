@@ -4,7 +4,7 @@ namespace SJBR\SrFeuserRegister\Security;
 /*
  *  Copyright notice
  *
- *  (c) 2015-2016 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2015 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,7 +41,7 @@ class SessionData
 	 * @param boolean $readAll: whether to retrieve all session data or only data for this extension key
 	 * @return array session data
 	 */
-	protected static function readSessionData($extensionKey, $readAll = false)
+	static protected function readSessionData($extensionKey, $readAll = false)
 	{
 		$sessionData = array();
 		$allSessionData = $GLOBALS['TSFE']->fe_user->getKey('ses', 'feuser');
@@ -64,7 +64,7 @@ class SessionData
 	 * @param boolean $keepRedirectUrl: whether to keep any redirectUrl
 	 * @return array session data
 	 */
-	protected static function writeSessionData($extensionKey, array $data, $keepToken = true, $keepRedirectUrl = true)
+	static protected function writeSessionData($extensionKey, array $data, $keepToken = true, $keepRedirectUrl = true)
 	{
 		$clearSession = empty($data);
 		if ($keepToken && !isset($data['token'])) {
@@ -104,7 +104,7 @@ class SessionData
 	 * @param boolean $keepRedirectUrl: whether to keep any redirectUrl
 	 * @return void
 	 */
-	public static function clearSessionData($keepRedirectUrl = true)
+	static public function clearSessionData($keepRedirectUrl = true)
 	{
 		$data = array();
 		$keepToken  = true;
@@ -117,8 +117,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return string token
 	 */
-	public static function readToken($extensionKey)
-	{
+	static public function readToken($extensionKey) {
 		$token = '';
 		$sessionData = self::readSessionData($extensionKey);
 		if (isset($sessionData['token'])) {
@@ -134,7 +133,7 @@ class SessionData
 	 * @param string token
 	 * @return void
 	 */
-	public static function writeToken($extensionKey, $token)
+	static public function writeToken($extensionKey, $token)
 	{
 		$sessionData = self::readSessionData($extensionKey);
 		if ($token == '') {
@@ -151,7 +150,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return string redirectUrl
 	 */
-	public static function readRedirectUrl($extensionKey)
+	static public function readRedirectUrl($extensionKey)
 	{
 		$redirectUrl = '';
 		$sessionData = self::readSessionData($extensionKey);
@@ -167,7 +166,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return void
 	 */
-	public static function writeRedirectUrl($extensionKey)
+	static public function writeRedirectUrl($extensionKey)
 	{
 		$redirectUrl = GeneralUtility::_GET('redirect_url');
 		if ($redirectUrl != '') {
@@ -183,7 +182,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return array secured FE user session data
 	 */
-	public static function readSecuredArray($extensionKey)
+	public function readSecuredArray($extensionKey)
 	{
 		$securedArray = array();
 		$sessionData = self::readSessionData($extensionKey);
@@ -202,7 +201,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return string redirectUrl
 	 */
-	public static function readPassword($extensionKey)
+	static public function readPassword($extensionKey)
 	{
 		$sessionData = self::readSessionData($extensionKey);
 		return array(
@@ -218,7 +217,7 @@ class SessionData
 	 * @param string $password: the password
 	 * @return void
 	 */
-	public static function writePassword($extensionKey, $password, $passwordAgain = '')
+	static public function writePassword($extensionKey, $password, $passwordAgain = '')
 	{
 		$sessionData = self::readSessionData($extensionKey);
 		if ($password === '') {
@@ -239,7 +238,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return string the encrypted password
 	 */
-	public static function readPasswordForStorage($extensionKey)
+	static public function readPasswordForStorage($extensionKey)
 	{
 		$password = self::readPassword($extensionKey);
 		$result = StorageSecurity::encryptPasswordForStorage($password['password']);
@@ -253,7 +252,7 @@ class SessionData
 	 * @param array $row: data array that may contain password values
 	 * @return void
 	 */
-	public static function securePassword($extensionKey, array $row)
+	static public function securePassword($extensionKey, array $row)
 	{
 		// Decrypt incoming password
 		$passwordRow = self::readPassword($extensionKey);
@@ -276,7 +275,7 @@ class SessionData
 	 * @param array $dataArray: incoming array
 	 * @return void
 	 */
-	public static function generatePassword($extensionKey, array &$dataArray)
+	static public function generatePassword($extensionKey, array &$dataArray)
 	{
 		$generatedPassword = substr(md5(uniqid(microtime(), 1)), 0, 32);
 		$dataArray['password'] = $generatedPassword;
