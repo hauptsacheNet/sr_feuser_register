@@ -73,7 +73,7 @@ class SecuredData
 	 * @param bool $htmlSpecial: whether to apply htmlspecialchars to the values
 	 * @return void
 	 */
-	public function secureInput(array &$dataArray, $htmlSpecial = true)
+	static public function secureInput(array &$dataArray, $htmlSpecial = true)
 	{
 		foreach ($dataArray as $key => $value) {
 			if (is_array($value)) {

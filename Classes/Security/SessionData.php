@@ -182,7 +182,7 @@ class SessionData
 	 * @param string $extensionKey: the extension key
 	 * @return array secured FE user session data
 	 */
-	public function readSecuredArray($extensionKey)
+	static public function readSecuredArray($extensionKey)
 	{
 		$securedArray = array();
 		$sessionData = self::readSessionData($extensionKey);
